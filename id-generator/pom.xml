@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>redis-id-generator</module>
+        <module>zookeeper-id-generator</module>
     </modules>
 
 

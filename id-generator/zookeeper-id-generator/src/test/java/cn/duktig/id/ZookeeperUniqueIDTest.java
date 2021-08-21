@@ -1,55 +1,51 @@
-package cn.duktig.id.service;
+package cn.duktig.id;
 
-import cn.duktig.id.enums.UniqueIDEnum;
+
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
 
-/**
- * description: 测试Redis生成唯一ID
- *
- * @author RenShiWei
- * Date: 2021/08/20 17:26
- **/
 @SpringBootTest
-public class IRedisUniqueIDServiceTest {
+public class ZookeeperUniqueIDTest {
 
-    @Autowired
-    private IRedisUniqueIDService redisUniqueIDService;
+    ZookeeperUniqueID zookeeperUniqueID = new ZookeeperUniqueID();
 
     /**
-     * 测试生成唯一id
+     * 测试 zk 生成唯一ID
      */
     @Test
-    public void generateUniqueId() {
-        String uniqueId = redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER);
-        System.out.println("唯一id：" + uniqueId);
+    public void getUniqueId() {
+        ZookeeperUniqueID zookeeperUniqueID = new ZookeeperUniqueID();
+        for (int i = 0; i < 10; i++) {
+            System.out.println("分布式唯一ID:" + zookeeperUniqueID.getUniqueId());
+        }
     }
 
     /**
-     * 多线程环境下，测试生成唯一ID
+     * 测试 zk 生成唯一ID（多线程下）
      */
     @Test
-    public void generateUniqueIdForThread() {
+    public void getUniqueIdForMore() {
+        ZookeeperUniqueID zookeeperUniqueID = new ZookeeperUniqueID();
+
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER));
+                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + zookeeperUniqueID.getUniqueId());
             }
         }, "thread-0").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER));
+                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + zookeeperUniqueID.getUniqueId());
             }
         }, "thread-1").start();
 
         new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER));
+                System.out.println(Thread.currentThread().getName() + "分布式唯一ID:" + zookeeperUniqueID.getUniqueId());
             }
         }, "thread-2").start();
 
@@ -59,29 +55,11 @@ public class IRedisUniqueIDServiceTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
-     * 单机Redis
-     * 单线程生成10W个 分布式ID 测速
-     * 大约为：110353 ms
-     */
-    @Test
-    public void generateUniqueIdForMore() {
-        LocalDateTime startTime = LocalDateTime.now();
-        for (int i = 0; i < 100000; i++) {
-            String id = redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER);
-            System.out.println(id);
-        }
-        LocalDateTime endTime = LocalDateTime.now();
-        // 计算时间差值
-        long minutes = Duration.between(startTime, endTime).toMillis();
-        // 输出
-        System.out.println("生成10万个分布式id所用的时间：" + minutes + " ms");
-    }
-
-    /**
-     * 单机Redis
+     * 单机ZooKeeper
      * 线程池开10个线程生成10W个 分布式ID 测速
      * 大约为：106959 ms
      */
@@ -98,7 +76,7 @@ public class IRedisUniqueIDServiceTest {
                 new ThreadPoolExecutor.CallerRunsPolicy());
         LocalDateTime startTime = LocalDateTime.now();
         for (int i = 0; i < 100000; i++) {
-            FutureTask<String> futureTask = new FutureTask<>(new ThreadPoolTask());
+            FutureTask<String> futureTask = new FutureTask<>(new CuratorUniqueIDTest.ThreadPoolTask());
             threadPoolExecutor.execute(futureTask);
             try {
                 String id = futureTask.get();
@@ -119,7 +97,7 @@ public class IRedisUniqueIDServiceTest {
 
         @Override
         public String call() {
-            String id = redisUniqueIDService.generateUniqueId(UniqueIDEnum.TS_ORDER);
+            String id = zookeeperUniqueID.getUniqueId();
             System.out.println(Thread.currentThread().getName() + "---" + id);
             return id;
         }

@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Date: 2021/7/25 14:22
  **/
 @SpringBootApplication
-public class RedisApplication {
+public class RedisIdGeneratorApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RedisApplication.class, args);
+        SpringApplication.run(RedisIdGeneratorApplication.class, args);
     }
 
 }

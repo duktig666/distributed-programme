@@ -141,6 +141,15 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--  所有子工程的公共依赖  -->
+    <dependencies>
+        <!--    springboot启动器    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
