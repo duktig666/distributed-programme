@@ -1,8 +1,0 @@
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\common\config\RedisConfig.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\common\utils\RedisUtils.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\id\constant\UniqueIDConstants.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\RedisApplication.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\id\utils\RedisUniqueIDUtil.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\id\enums\UniqueIDEnum.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\id\service\impl\RedisUniqueIDServiceImpl.java
-D:\IDE\code\distributed-programme\id-generator\redis-id-generator\src\main\java\cn\duktig\id\service\IRedisUniqueIDService.java
