@@ -7,6 +7,9 @@
     <groupId>cn.duktig</groupId>
     <artifactId>distributed-programme</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>id-generator</module>
+    </modules>
     <packaging>pom</packaging>
 
     <name>distributed-programme</name>
@@ -135,9 +138,22 @@
                 <version>${druid.version}</version>
             </dependency>
 
-
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <!--第三方maven私服-->
     <repositories>
