@@ -11,7 +11,7 @@
 
 ```java
 |- id-generator	分布式ID问题解决方案
-	|-- other-id-generator	基于雪花算法和UUID的其他实现分布式ID的方案
+    |-- other-id-generator	基于雪花算法和UUID的其他实现分布式ID的方案
     |-- redis-id-generator	基于Redis的分布式ID生成器
     |-- zookeeper-id-generator 基于ZK的分布式ID生成器
 |- …… 正在更新中，下一个更新 分布式锁的实现
