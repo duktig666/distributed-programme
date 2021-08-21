@@ -60,6 +60,15 @@
 8. 百度开源的分布式唯一ID生成器UidGenerator
 9. 滴滴 Tinyid
 
+#### 对比Redis和ZooKeeper测试
+
+环境：**单机的Redis和单机的ZooKeeper进行测试**
+
+|                                  | Redis     | ZooKeeper                        |
+| -------------------------------- | --------- | -------------------------------- |
+| 单线程10万分布式ID               | 110353 ms | 3060085 ms  大约为 51min         |
+| 线程池开10个线程生成10万分布式ID | 106959 ms | 3073690 ms  基本和单线程环境一致 |
+
 #### 关于本仓库的代码详解参看如下
 
 1. [分布式ID常用方案——UUID、MySQL、Redis、ZooKeeper、雪花算法、美团Leaf……](https://duktig.cn/archives/85/)
