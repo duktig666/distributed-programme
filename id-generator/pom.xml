@@ -14,6 +14,7 @@
     <modules>
         <module>redis-id-generator</module>
         <module>zookeeper-id-generator</module>
+        <module>other-id-generator</module>
     </modules>
 
 
