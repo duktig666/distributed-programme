@@ -9,11 +9,13 @@
 
 ## 文件夹结构
 
-```java
+```
 |- id-generator	分布式ID问题解决方案
     |-- other-id-generator	基于雪花算法和UUID的其他实现分布式ID的方案
     |-- redis-id-generator	基于Redis的分布式ID生成器
     |-- zookeeper-id-generator 基于ZK的分布式ID生成器
+|- load-balance    负载均衡
+    |-- load-balance-algorithm 常用的负载均衡算法实现（随机、轮询、加权随机、加权轮询、源地址Hash……）
 |- …… 正在更新中，下一个更新 分布式锁的实现
 ```
 

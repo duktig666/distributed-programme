@@ -4,6 +4,9 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 /**
  * description:Hutool的雪花算法实现
  * <p>
@@ -19,11 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 public class HutoolSnowflake {
 
     public static void main(String[] args) {
+        LocalDateTime startTime = LocalDateTime.now();
         Snowflake snowflake = IdUtil.getSnowflake(1, 1);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100000; i++) {
             long id = snowflake.nextId();
-            System.out.println(id);
+//            System.out.println(Long.toBinaryString(id));
+//            System.out.println(id);
         }
+        LocalDateTime endTime = LocalDateTime.now();
+        // 计算时间差值
+        long minutes = Duration.between(startTime, endTime).toMillis();
+        // 输出
+        System.out.println("HutoolSnowflake 生成10万个分布式id所用的时间：" + minutes + " ms");
     }
 
 }

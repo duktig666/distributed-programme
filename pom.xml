@@ -9,6 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>id-generator</module>
+        <module>load-balance</module>
     </modules>
     <packaging>pom</packaging>
 
