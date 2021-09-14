@@ -2,9 +2,6 @@ package cn.duktig.loadbalance.algorithm;
 
 import cn.duktig.loadbalance.LoadBalance;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,21 +14,12 @@ import java.util.Map;
  **/
 public class HashLoadBalance implements LoadBalance {
 
-    /**
-     * 获取Ip地址
-     *
-     * @return IP地址
-     */
-    public String getIp() {
-        try {
-            InetAddress ip4 = Inet4Address.getLocalHost();
-            return ip4.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    /** 用于源地址hash的参数（可以是IP/主机名/域名） */
+    private String requestHashParam;
 
+    public HashLoadBalance(String requestHashParam) {
+        this.requestHashParam = requestHashParam;
+    }
 
     /**
      * 路由
@@ -45,7 +33,7 @@ public class HashLoadBalance implements LoadBalance {
         List<String> serverList = new ArrayList<>(serverMap.size());
         serverList.addAll(serverMap.keySet());
         // 哈希计算请求的服务器
-        int index = this.getIp().hashCode() % serverList.size();
+        int index = requestHashParam.hashCode() % serverList.size();
         return serverList.get(Math.abs(index));
     }
 

@@ -1,6 +1,7 @@
 package cn.duktig.loadbalance;
 
 import cn.duktig.loadbalance.algorithm.*;
+import cn.duktig.loadbalance.support.Md5HashFunction;
 import cn.duktig.loadbalance.utils.LoadBalanceUtil;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +56,10 @@ public class LoadBalanceTest {
      */
     @Test
     public void testHash() {
-        Map<String, Integer> routingMap = LoadBalanceUtil.imitateRouting(new HashLoadBalance(), 20000);
+        // 提前设置请求的Ip
+        LoadBalanceUtil.setRequestIp("127.0.0.1");
+        Map<String, Integer> routingMap =
+                LoadBalanceUtil.imitateRouting(new HashLoadBalance(LoadBalanceUtil.getRequestIp()), 20000);
         // 统计路由结果
         LoadBalanceUtil.countRoutingMap(routingMap);
     }
@@ -90,11 +94,52 @@ public class LoadBalanceTest {
         minutes = Duration.between(startTime, endTime).toMillis();
         System.out.println("加权随机负载均衡算法 用时：" + minutes + " ms");
 
+        // 提前设置请求的Ip
+        LoadBalanceUtil.setRequestIp("127.0.0.1");
         startTime = LocalDateTime.now();
-        LoadBalanceUtil.imitateRouting(new HashLoadBalance(), 100000);
+        LoadBalanceUtil.imitateRouting(new HashLoadBalance(LoadBalanceUtil.getRequestIp()), 100000);
         endTime = LocalDateTime.now();
         minutes = Duration.between(startTime, endTime).toMillis();
         System.out.println("源地址Hash负载均衡算法 用时：" + minutes + " ms");
+    }
+
+    /**
+     * 测试 一致性hash 实现负载均衡
+     */
+    @Test
+    public void testConsistentHashLoadBalance() {
+        System.out.println("---第一台机器测试---");
+        // 提前设置请求的Ip
+        LoadBalanceUtil.setRequestIp("192.122.2.1");
+        Map<String, Integer> routingMap =
+                LoadBalanceUtil.imitateRouting(new ConsistentHashLoadBalance(new Md5HashFunction(), 3,
+                        LoadBalanceUtil.getRequestIp()), 4000);
+        // 统计路由结果
+        LoadBalanceUtil.countRoutingMap(routingMap);
+
+        System.out.println("---第二台机器测试---");
+        LoadBalanceUtil.setRequestIp("192.122.2.1");
+        routingMap = LoadBalanceUtil.imitateRouting(new ConsistentHashLoadBalance(new Md5HashFunction(), 3,
+                LoadBalanceUtil.getRequestIp()), 4000);
+        LoadBalanceUtil.countRoutingMap(routingMap);
+
+        System.out.println("---第三台机器测试---");
+        LoadBalanceUtil.setRequestIp("192.122.2.2");
+        routingMap = LoadBalanceUtil.imitateRouting(new ConsistentHashLoadBalance(new Md5HashFunction(), 3,
+                LoadBalanceUtil.getRequestIp()), 4000);
+        LoadBalanceUtil.countRoutingMap(routingMap);
+
+        System.out.println("---第四台机器测试---");
+        LoadBalanceUtil.setRequestIp("192.122.2.2");
+        routingMap = LoadBalanceUtil.imitateRouting(new ConsistentHashLoadBalance(new Md5HashFunction(), 3,
+                LoadBalanceUtil.getRequestIp()), 4000);
+        LoadBalanceUtil.countRoutingMap(routingMap);
+
+        System.out.println("---第五台机器测试---");
+        LoadBalanceUtil.setRequestIp("192.122.2.3");
+        routingMap = LoadBalanceUtil.imitateRouting(new ConsistentHashLoadBalance(new Md5HashFunction(), 3,
+                LoadBalanceUtil.getRequestIp()), 4000);
+        LoadBalanceUtil.countRoutingMap(routingMap);
     }
 
 }
