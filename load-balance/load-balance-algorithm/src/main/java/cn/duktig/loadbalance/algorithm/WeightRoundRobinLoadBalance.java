@@ -36,9 +36,7 @@ public class WeightRoundRobinLoadBalance implements LoadBalance {
         }
         synchronized (WeightRoundRobinLoadBalance.class) {
             index++;
-            if (index == serverList.size()) {
-                index = 0;
-            }
+            index %= serverList.size();
             return serverList.get(index);
         }
     }

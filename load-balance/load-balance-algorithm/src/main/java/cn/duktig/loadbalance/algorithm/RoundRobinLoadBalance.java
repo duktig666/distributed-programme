@@ -29,9 +29,7 @@ public class RoundRobinLoadBalance implements LoadBalance {
         serverList.addAll(serverMap.keySet());
         synchronized (RoundRobinLoadBalance.class) {
             index++;
-            if (index == serverList.size()) {
-                index = 0;
-            }
+            index %= serverList.size();
             return serverList.get(index);
         }
     }
